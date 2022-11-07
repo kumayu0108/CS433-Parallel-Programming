@@ -34,8 +34,8 @@ __global__ void matmult_kernel (float *a, float *b, float *c)
 	__shared__ float bs[TILE_SIZE][TILE_SIZE];
 	
 	for (i=0; i<COLS_A/TILE_SIZE; i++) {
-		as[threadIdx.x][threadIdx.y] = a[c_row*COLS_A + i*TILE_SIZE + threadIdx.x];
-		bs[threadIdx.x][threadIdx.y] = b[c_col + COLS_B*(i*TILE_SIZE + threadIdx.y)];
+		as[threadIdx.y][threadIdx.x] = a[c_row*COLS_A + i*TILE_SIZE + threadIdx.x];
+		bs[threadIdx.y][threadIdx.x] = b[c_col + COLS_B*(i*TILE_SIZE + threadIdx.y)];
 		__syncthreads();
 		for (j=0; j<TILE_SIZE; j++) {
 			x += (as[threadIdx.y][j]*bs[j][threadIdx.x]);
